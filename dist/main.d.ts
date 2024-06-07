@@ -1,0 +1,11 @@
+import * as Mockttp from 'mockttp';
+import { MockthereumNode, MockthereumOptions } from './mock-node';
+export declare function getLocal(options?: Mockttp.MockttpOptions & MockthereumOptions): MockthereumNode;
+export declare function getRemote(options?: Mockttp.MockttpOptions & MockthereumOptions): MockthereumNode;
+export declare function getAdminServer(options?: Mockttp.MockttpAdminServerOptions): Mockttp.MockttpAdminServer;
+export type { MockthereumNode, MockthereumOptions };
+export type { CallRuleBuilder, TransactionRuleBuilder } from './contract-rule-builder';
+export type { BalanceRuleBuilder, BlockNumberRuleBuilder, GasPriceRuleBuilder } from './single-value-rule-builders';
+export type { MockedContract } from './mocked-contract';
+export type { RpcErrorProperties } from './jsonrpc';
+export type { RawTransactionReceipt } from './mock-node';
