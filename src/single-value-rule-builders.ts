@@ -11,7 +11,7 @@ class SingleValueRuleBuilder {
     constructor(
         private addRuleCallback: (rule: Mockttp.RequestRuleData) => Promise<Mockttp.MockedEndpoint>,
         private matchers: Mockttp.matchers.RequestMatcher[] = []
-    ) {}
+    ) { }
 
     /**
      * Successfully return a given value.
@@ -108,6 +108,22 @@ export class GasPriceRuleBuilder extends SingleValueRuleBuilder {
         addRuleCallback: (rule: Mockttp.RequestRuleData) => Promise<Mockttp.MockedEndpoint>
     ) {
         super(addRuleCallback, [new RpcCallMatcher('eth_gasPrice')]);
+    }
+
+}
+
+/**
+ * A rule builder to allow defining rules that mock the current chain id.
+ */
+export class ChainIdRuleBuilder extends SingleValueRuleBuilder {
+
+    /**
+     * This builder should not be constructed directly. Call `mockNode.forChainId()` instead.
+     */
+    constructor(
+        addRuleCallback: (rule: Mockttp.RequestRuleData) => Promise<Mockttp.MockedEndpoint>
+    ) {
+        super(addRuleCallback, [new RpcCallMatcher('eth_chainId')]);
     }
 
 }
