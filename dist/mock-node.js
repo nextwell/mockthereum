@@ -112,6 +112,11 @@ class MockthereumNode {
                             handler: new jsonrpc_1.RpcResponseHandler("0x1")
                         }),
                         this.mockttpServer.addRequestRule({
+                            matchers: [new jsonrpc_1.RpcCallMatcher('eth_getTransactionCount')],
+                            priority: Mockttp.RulePriority.FALLBACK,
+                            handler: new jsonrpc_1.RpcResponseHandler("0x1")
+                        }),
+                        this.mockttpServer.addRequestRule({
                             matchers: [new jsonrpc_1.RpcCallMatcher('eth_call')],
                             priority: Mockttp.RulePriority.FALLBACK,
                             handler: new jsonrpc_1.RpcErrorResponseHandler("No Mockthereum rules found matching Ethereum contract call")
