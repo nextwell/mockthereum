@@ -105,6 +105,11 @@ export class MockthereumNode {
                         handler: new RpcResponseHandler("0x1")
                     }),
                     this.mockttpServer.addRequestRule({
+                        matchers: [new RpcCallMatcher('eth_getCode')],
+                        priority: Mockttp.RulePriority.FALLBACK,
+                        handler: new RpcResponseHandler("0x")
+                    }),
+                    this.mockttpServer.addRequestRule({
                         matchers: [new RpcCallMatcher('eth_call')],
                         priority: Mockttp.RulePriority.FALLBACK,
                         handler: new RpcErrorResponseHandler(
