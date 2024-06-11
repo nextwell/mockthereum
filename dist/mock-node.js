@@ -114,17 +114,12 @@ class MockthereumNode {
                         this.mockttpServer.addRequestRule({
                             matchers: [new jsonrpc_1.RpcCallMatcher('eth_getTransactionCount')],
                             priority: Mockttp.RulePriority.FALLBACK,
-                            handler: new jsonrpc_1.RpcResponseHandler("0x1")
+                            handler: new jsonrpc_1.RpcResponseHandler("0x0")
                         }),
                         this.mockttpServer.addRequestRule({
                             matchers: [new jsonrpc_1.RpcCallMatcher('eth_getCode')],
                             priority: Mockttp.RulePriority.FALLBACK,
                             handler: new jsonrpc_1.RpcResponseHandler("0x")
-                        }),
-                        this.mockttpServer.addRequestRule({
-                            matchers: [new jsonrpc_1.RpcCallMatcher('eth_blockNumber')],
-                            priority: Mockttp.RulePriority.FALLBACK,
-                            handler: new jsonrpc_1.RpcResponseHandler("0x132332e")
                         }),
                         this.mockttpServer.addRequestRule({
                             matchers: [new jsonrpc_1.RpcCallMatcher('eth_call')],
