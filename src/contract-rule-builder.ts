@@ -16,7 +16,7 @@ class ContractRuleBuilder {
     constructor(
         private addRuleCallback: (rule: Mockttp.RequestRuleData) => Promise<Mockttp.MockedEndpoint>,
         protected matchers: Mockttp.matchers.RequestMatcher[] = []
-    ) {}
+    ) { }
 
     private paramTypes: string[] | undefined;
     protected returnTypes: string[] | undefined;
@@ -157,7 +157,7 @@ export class CallRuleBuilder extends ContractRuleBuilder {
             } else {
                 values = [args[0]];
             }
-        } else if (!Array.isArray(args[0])){
+        } else if (!Array.isArray(args[0])) {
             types = [args[0]];
             values = [args[1]];
         } else {
@@ -178,11 +178,11 @@ export class CallRuleBuilder extends ContractRuleBuilder {
     thenRevert(errorMessage: string) {
         return this.buildRule(new RpcErrorResponseHandler(
             `VM Exception while processing transaction: revert ${errorMessage}`, {
-                name: 'CallError',
-                data: `0x08c379a0${ // String type prefix
-                    encodeAbi(['string'], [errorMessage]).slice(2)
+            name: 'CallError',
+            data: `0x08c379a0${ // String type prefix
+                encodeAbi(['string'], [errorMessage]).slice(2)
                 }`
-            }
+        }
         ));
     }
 
@@ -202,11 +202,18 @@ export class TransactionRuleBuilder extends ContractRuleBuilder {
         addReceiptCallback: (id: string, receipt: Partial<RawTransactionReceipt>) => Promise<void>
     ) {
         if (targetAddress) {
-            super(addRuleCallback, [new RpcCallMatcher('eth_sendTransaction', [{
-                to: targetAddress
-            }])]);
+            super(addRuleCallback, [
+                new RpcCallMatcher('eth_sendTransaction',
+                    [{
+                        to: targetAddress
+                    }]),
+                new RpcCallMatcher('eth_sendRawTransaction',
+                    [{
+                        to: targetAddress
+                    }])
+            ]);
         } else {
-            super(addRuleCallback, [new RpcCallMatcher('eth_sendTransaction')]);
+            super(addRuleCallback, [new RpcCallMatcher('eth_sendTransaction'), new RpcCallMatcher('eth_sendRawTransaction')]);
         }
 
         this.addReceiptCallback = addReceiptCallback;
