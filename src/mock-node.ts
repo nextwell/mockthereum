@@ -58,9 +58,9 @@ export class MockthereumNode {
      * This method returns a promise, which you should wait for to ensure the node
      * is fully started before using it.
      */
-    async start() {
+    async start(port: number) {
         this.reset();
-        await this.mockttpServer.start();
+        await this.mockttpServer.start(port);
         await this.addBaseRules();
     }
 
@@ -94,28 +94,16 @@ export class MockthereumNode {
 
             ...(!this.options.unmatchedRequests || this.options.unmatchedRequests === 'stub'
                 ? [
-                    this.mockttpServer.addRequestRule({
-                        matchers: [new RpcCallMatcher('eth_chainId')],
-                        priority: Mockttp.RulePriority.FALLBACK,
-                        handler: new RpcResponseHandler("0x1")
-                    }),
-                    this.mockttpServer.addRequestRule({
-                        matchers: [new RpcCallMatcher('eth_getTransactionCount')],
-                        priority: Mockttp.RulePriority.FALLBACK,
-                        handler: new RpcResponseHandler("0x0")
-                    }),
-                    this.mockttpServer.addRequestRule({
-                        matchers: [new RpcCallMatcher('eth_getCode')],
-                        priority: Mockttp.RulePriority.FALLBACK,
-                        handler: new RpcResponseHandler("0x")
-                    }),
-                    this.mockttpServer.addRequestRule({
-                        matchers: [new RpcCallMatcher('eth_call')],
-                        priority: Mockttp.RulePriority.FALLBACK,
-                        handler: new RpcErrorResponseHandler(
-                            "No Mockthereum rules found matching Ethereum contract call"
-                        )
-                    }),
+                    // this.mockttpServer.addRequestRule({
+                    //     matchers: [new RpcCallMatcher('eth_getTransactionCount')],
+                    //     priority: Mockttp.RulePriority.FALLBACK,
+                    //     handler: new RpcResponseHandler("0x0")
+                    // }),
+                    // this.mockttpServer.addRequestRule({
+                    //     matchers: [new RpcCallMatcher('eth_getCode')],
+                    //     priority: Mockttp.RulePriority.FALLBACK,
+                    //     handler: new RpcResponseHandler("0x")
+                    // }),
                     this.mockttpServer.addRequestRule({
                         matchers: [new RpcCallMatcher('eth_sendTransaction')],
                         priority: Mockttp.RulePriority.FALLBACK,
@@ -135,26 +123,26 @@ export class MockthereumNode {
                         priority: Mockttp.RulePriority.FALLBACK,
                         handler: new RpcResponseHandler(null)
                     }),
-                    this.mockttpServer.addRequestRule({
-                        matchers: [new RpcCallMatcher('eth_getBalance')],
-                        priority: Mockttp.RulePriority.FALLBACK,
-                        handler: new RpcResponseHandler("0x0")
-                    }),
-                    this.mockttpServer.addRequestRule({
-                        matchers: [new RpcCallMatcher('eth_blockNumber')],
-                        priority: Mockttp.RulePriority.FALLBACK,
-                        handler: new RpcResponseHandler("0x1")
-                    }),
-                    this.mockttpServer.addRequestRule({
-                        matchers: [new RpcCallMatcher('eth_getBlockByNumber')],
-                        priority: Mockttp.RulePriority.FALLBACK,
-                        handler: new RpcResponseHandler(null)
-                    }),
-                    this.mockttpServer.addRequestRule({
-                        matchers: [new RpcCallMatcher('eth_gasPrice')],
-                        priority: Mockttp.RulePriority.FALLBACK,
-                        handler: new RpcResponseHandler(`0x${(1000).toString(16)}`)
-                    })
+                    // this.mockttpServer.addRequestRule({
+                    //     matchers: [new RpcCallMatcher('eth_getBalance')],
+                    //     priority: Mockttp.RulePriority.FALLBACK,
+                    //     handler: new RpcResponseHandler("0x0")
+                    // }),
+                    // this.mockttpServer.addRequestRule({
+                    //     matchers: [new RpcCallMatcher('eth_blockNumber')],
+                    //     priority: Mockttp.RulePriority.FALLBACK,
+                    //     handler: new RpcResponseHandler("0x1")
+                    // }),
+                    // this.mockttpServer.addRequestRule({
+                    //     matchers: [new RpcCallMatcher('eth_getBlockByNumber')],
+                    //     priority: Mockttp.RulePriority.FALLBACK,
+                    //     handler: new RpcResponseHandler(null)
+                    // }),
+                    // this.mockttpServer.addRequestRule({
+                    //     matchers: [new RpcCallMatcher('eth_gasPrice')],
+                    //     priority: Mockttp.RulePriority.FALLBACK,
+                    //     handler: new RpcResponseHandler(`0x${(1000).toString(16)}`)
+                    // })
                 ]
                 : [
                     this.mockttpServer.forUnmatchedRequest()

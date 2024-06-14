@@ -203,17 +203,12 @@ export class TransactionRuleBuilder extends ContractRuleBuilder {
     ) {
         if (targetAddress) {
             super(addRuleCallback, [
-                new RpcCallMatcher('eth_sendTransaction',
-                    [{
-                        to: targetAddress
-                    }]),
                 new RpcCallMatcher('eth_sendRawTransaction',
                     [{
                         to: targetAddress
-                    }])
-            ]);
+                    }])]);
         } else {
-            super(addRuleCallback, [new RpcCallMatcher('eth_sendTransaction'), new RpcCallMatcher('eth_sendRawTransaction')]);
+            super(addRuleCallback, [new RpcCallMatcher('eth_sendRawTransaction')]);
         }
 
         this.addReceiptCallback = addReceiptCallback;

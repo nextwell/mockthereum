@@ -46,7 +46,7 @@ export declare class MockthereumNode {
      * This method returns a promise, which you should wait for to ensure the node
      * is fully started before using it.
      */
-    start(): Promise<void>;
+    start(port: number): Promise<void>;
     /**
      * Stop the node when you're finished with it to close down the underlying server and
      * any remaining connections.

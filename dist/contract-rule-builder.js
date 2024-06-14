@@ -174,16 +174,13 @@ class TransactionRuleBuilder extends ContractRuleBuilder {
     addRuleCallback, addReceiptCallback) {
         if (targetAddress) {
             super(addRuleCallback, [
-                new jsonrpc_1.RpcCallMatcher('eth_sendTransaction', [{
-                        to: targetAddress
-                    }]),
                 new jsonrpc_1.RpcCallMatcher('eth_sendRawTransaction', [{
                         to: targetAddress
                     }])
             ]);
         }
         else {
-            super(addRuleCallback, [new jsonrpc_1.RpcCallMatcher('eth_sendTransaction'), new jsonrpc_1.RpcCallMatcher('eth_sendRawTransaction')]);
+            super(addRuleCallback, [new jsonrpc_1.RpcCallMatcher('eth_sendRawTransaction')]);
         }
         this.addReceiptCallback = addReceiptCallback;
     }
