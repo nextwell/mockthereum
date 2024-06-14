@@ -205,7 +205,7 @@ class MockthereumNode {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.mockttpServer.addRequestRule({
                 matchers: [new jsonrpc_1.RpcCallMatcher('eth_getTransactionReceipt', [id])],
-                handler: new jsonrpc_1.RpcResponseHandler(Object.assign({ status: '0x1', transactionHash: id, blockNumber: '0x100', blockHash: '0x1', from: '0x0', to: '0x0', cumulativeGasUsed: '0x1', gasUsed: '0x1', effectiveGasPrice: '0x0', contractAddress: null, logs: [], logsBloom: '0x0', type: '0x0' }, receipt))
+                handler: new jsonrpc_1.RpcResponseHandler(Object.assign({ "blockHash": "0x163d315a76c93946df46d2ef94880447edc0dd15ec5279a408b88d1b6cbfe2cb", "blockNumber": "0x2b33d17", "contractAddress": null, "cumulativeGasUsed": "0xcbb4b6", "effectiveGasPrice": "0x18523b0032", "from": "0xd5ed26d93129a8b51ac54b40477327f6511824b6", "gasUsed": "0x21cc9", "logs": [], "logsBloom": "0x00200000000000000000000080000000000800000008000000000000000000000000000000000000000000100000000000008000000000000000004000000000000000080000480000000008000000a00000040000800000000100008000020000200000000000000020000000000000000000000000000180000490200000000001000000000000000000000000000000000001000000080000004000000000200000000000000000000000000004004040000000000000000000000000004008000002000000000021000000000000000000000000801000108000000000000040008000200000000400000000000000000000000000400000000008100800", "status": "0x1", "to": "0x1111111254eeb25477b68fb85ed929f73a960582", "transactionHash": id, "transactionIndex": "0x53", "type": "0x2" }, receipt))
             });
         });
     }
