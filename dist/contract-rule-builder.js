@@ -225,7 +225,7 @@ class TransactionRuleBuilder extends ContractRuleBuilder {
             // 64 char random hex id:
             const transactionId = `0x${(0, uuid_1.v4)().replace(/-/g, '')}${(0, uuid_1.v4)().replace(/-/g, '')}`;
             const body = yield req.body.getJson();
-            yield this.addReceiptCallback(transactionId, Object.assign({ status: '0x', type: '0x2', from: body.params[0].from, to: body.params[0].to }, receipt));
+            yield this.addReceiptCallback(transactionId, Object.assign({ status: '0x0', type: '0x2' }, receipt));
             return {
                 headers: { 'transfer-encoding': 'chunked', 'connection': 'keep-alive' },
                 json: {

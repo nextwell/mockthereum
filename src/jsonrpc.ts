@@ -37,12 +37,16 @@ export class RpcCallTransactionRawMatcher extends Mockttp.matchers.JsonBodyFlexi
     async matches(request: any): Promise<boolean> {
         const receivedBody = await (request.body.asJson().catch(() => undefined));
 
-        const tx = ethers.utils.parseTransaction(receivedBody.params[0]);
-        if (receivedBody === undefined) return false;
+        let tx;
 
-        if (tx) {
-            receivedBody.params = [tx];
-        }
+        try {
+            tx = ethers.utils.parseTransaction(receivedBody.params[0]);
+        } catch (err) { }
+
+        if (receivedBody === undefined || !tx) return false;
+
+        receivedBody.params = [tx];
+
         return _.isMatch(receivedBody, this.body)
     }
 }

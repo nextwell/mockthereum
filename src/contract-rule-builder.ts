@@ -284,10 +284,8 @@ export class TransactionRuleBuilder extends ContractRuleBuilder {
                 };
 
                 await this.addReceiptCallback(transactionId, {
-                    status: '0x',
+                    status: '0x0',
                     type: '0x2',
-                    from: body.params[0].from,
-                    to: body.params[0].to,
                     ...receipt
                 });
 

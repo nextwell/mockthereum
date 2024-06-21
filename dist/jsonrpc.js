@@ -61,12 +61,14 @@ class RpcCallTransactionRawMatcher extends Mockttp.matchers.JsonBodyFlexibleMatc
     matches(request) {
         return __awaiter(this, void 0, void 0, function* () {
             const receivedBody = yield (request.body.asJson().catch(() => undefined));
-            const tx = ethers.utils.parseTransaction(receivedBody.params[0]);
-            if (receivedBody === undefined)
-                return false;
-            if (tx) {
-                receivedBody.params = [tx];
+            let tx;
+            try {
+                tx = ethers.utils.parseTransaction(receivedBody.params[0]);
             }
+            catch (err) { }
+            if (receivedBody === undefined || !tx)
+                return false;
+            receivedBody.params = [tx];
             return _.isMatch(receivedBody, this.body);
         });
     }
