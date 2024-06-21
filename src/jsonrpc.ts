@@ -4,6 +4,7 @@
  */
 
 import * as Mockttp from 'mockttp';
+import * as ethers from 'ethers';
 
 export class RpcCallMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
 
@@ -16,6 +17,18 @@ export class RpcCallMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
             method,
             params
         });
+    }
+
+    async matches(request: any): Promise<boolean> {
+        const receivedBody = await (request.body.asJson().catch(() => undefined));
+
+        if (receivedBody === undefined) return false;
+
+        const tx = ethers.utils.parseTransaction(receivedBody.params[0]);
+
+        if (tx) request.params[0] = tx;
+
+        return super.matches(request);
     }
 
 }
