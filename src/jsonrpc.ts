@@ -5,8 +5,23 @@
 
 import * as Mockttp from 'mockttp';
 import * as ethers from 'ethers';
+import * as _ from 'lodash';
 
 export class RpcCallMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
+
+    constructor(
+        method: string,
+        params: Array<unknown> = []
+    ) {
+        super({
+            jsonrpc: "2.0",
+            method,
+            params
+        });
+    }
+}
+
+export class RpcCallTransactionRawMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
 
     constructor(
         method: string,
@@ -22,15 +37,14 @@ export class RpcCallMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
     async matches(request: any): Promise<boolean> {
         const receivedBody = await (request.body.asJson().catch(() => undefined));
 
+        const tx = ethers.utils.parseTransaction(receivedBody.params[0]);
         if (receivedBody === undefined) return false;
 
-        const tx = ethers.utils.parseTransaction(receivedBody.params[0]);
-
-        if (tx) request.params[0] = tx;
-
-        return super.matches(request);
+        if (tx) {
+            receivedBody.params = [tx];
+        }
+        return _.isMatch(receivedBody, this.body)
     }
-
 }
 
 export class RpcResponseHandler extends Mockttp.requestHandlerDefinitions.CallbackHandlerDefinition {

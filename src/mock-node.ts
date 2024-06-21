@@ -201,9 +201,9 @@ export class MockthereumNode {
      * `thenX()` method and wait for the returned promise to complete the rule and
      * activate it.
      */
-    forSendTransactionTo(address: `0x${string}`) {
+    forSendTransactionTo(params: object) {
         return new TransactionRuleBuilder(
-            address,
+            params,
             this.mockttpServer.addRequestRule,
             this.addReceipt.bind(this)
         );

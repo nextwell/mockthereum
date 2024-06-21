@@ -36,9 +36,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RpcErrorResponseHandler = exports.RpcResponseHandler = exports.RpcCallMatcher = void 0;
+exports.RpcErrorResponseHandler = exports.RpcResponseHandler = exports.RpcCallTransactionRawMatcher = exports.RpcCallMatcher = void 0;
 const Mockttp = __importStar(require("mockttp"));
 const ethers = __importStar(require("ethers"));
+const _ = __importStar(require("lodash"));
 class RpcCallMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
     constructor(method, params = []) {
         super({
@@ -47,22 +48,30 @@ class RpcCallMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
             params
         });
     }
-    matches(request) {
-        const _super = Object.create(null, {
-            matches: { get: () => super.matches }
+}
+exports.RpcCallMatcher = RpcCallMatcher;
+class RpcCallTransactionRawMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
+    constructor(method, params = []) {
+        super({
+            jsonrpc: "2.0",
+            method,
+            params
         });
+    }
+    matches(request) {
         return __awaiter(this, void 0, void 0, function* () {
             const receivedBody = yield (request.body.asJson().catch(() => undefined));
+            const tx = ethers.utils.parseTransaction(receivedBody.params[0]);
             if (receivedBody === undefined)
                 return false;
-            const tx = ethers.utils.parseTransaction(receivedBody.params[0]);
-            if (tx)
-                request.params[0] = tx;
-            return _super.matches.call(this, request);
+            if (tx) {
+                receivedBody.params = [tx];
+            }
+            return _.isMatch(receivedBody, this.body);
         });
     }
 }
-exports.RpcCallMatcher = RpcCallMatcher;
+exports.RpcCallTransactionRawMatcher = RpcCallTransactionRawMatcher;
 class RpcResponseHandler extends Mockttp.requestHandlerDefinitions.CallbackHandlerDefinition {
     constructor(result) {
         super((req) => __awaiter(this, void 0, void 0, function* () {

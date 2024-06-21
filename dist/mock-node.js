@@ -198,8 +198,8 @@ class MockthereumNode {
      * `thenX()` method and wait for the returned promise to complete the rule and
      * activate it.
      */
-    forSendTransactionTo(address) {
-        return new contract_rule_builder_1.TransactionRuleBuilder(address, this.mockttpServer.addRequestRule, this.addReceipt.bind(this));
+    forSendTransactionTo(params) {
+        return new contract_rule_builder_1.TransactionRuleBuilder(params, this.mockttpServer.addRequestRule, this.addReceipt.bind(this));
     }
     addReceipt(id, receipt) {
         return __awaiter(this, void 0, void 0, function* () {

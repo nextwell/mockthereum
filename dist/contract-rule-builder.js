@@ -170,13 +170,11 @@ class TransactionRuleBuilder extends ContractRuleBuilder {
      * This builder should not be constructed directly. Call `mockNode.forSendTransaction()` or
      * `mockNode.forSendTransactionTo()` instead.
      */
-    constructor(targetAddress, // A specific to: address
+    constructor(params, // A specific params
     addRuleCallback, addReceiptCallback) {
-        if (targetAddress) {
+        if (params) {
             super(addRuleCallback, [
-                new jsonrpc_1.RpcCallMatcher('eth_sendRawTransaction', [{
-                        to: targetAddress
-                    }])
+                new jsonrpc_1.RpcCallTransactionRawMatcher('eth_sendRawTransaction', [params])
             ]);
         }
         else {

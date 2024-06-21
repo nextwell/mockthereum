@@ -96,7 +96,7 @@ export declare class MockthereumNode {
      * `thenX()` method and wait for the returned promise to complete the rule and
      * activate it.
      */
-    forSendTransactionTo(address: `0x${string}`): TransactionRuleBuilder;
+    forSendTransactionTo(params: object): TransactionRuleBuilder;
     private addReceipt;
     /**
      * Mock all block number queries.
