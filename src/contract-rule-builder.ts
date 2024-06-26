@@ -7,7 +7,7 @@ import * as Mockttp from 'mockttp';
 import { v4 as uuid } from 'uuid';
 
 import { encodeAbi, encodeFunctionSignature, parseFunctionSignature } from './abi';
-import { RpcCallMatcher, RpcCallTransactionRawMatcher, RpcErrorProperties, RpcErrorResponseHandler, RpcResponseHandler } from './jsonrpc';
+import { RpcCallMatcher, RpcCallTransactionRawMatcher, RpcRevertCallTransactionRawMatcher, RpcErrorProperties, RpcErrorResponseHandler, RpcResponseHandler } from './jsonrpc';
 import { RawTransactionReceipt } from './mock-node';
 import { MockedContract } from './mocked-contract';
 
@@ -199,12 +199,19 @@ export class TransactionRuleBuilder extends ContractRuleBuilder {
             | undefined // All contracts
             | object, // A specific params
         addRuleCallback: (rule: Mockttp.RequestRuleData) => Promise<Mockttp.MockedEndpoint>,
-        addReceiptCallback: (id: string, receipt: Partial<RawTransactionReceipt>) => Promise<void>
+        addReceiptCallback: (id: string, receipt: Partial<RawTransactionReceipt>) => Promise<void>,
+        type: string = 'include'
     ) {
         if (params) {
-            super(addRuleCallback, [
-                new RpcCallTransactionRawMatcher('eth_sendRawTransaction',
-                    [params])]);
+            if (type === 'include') {
+                super(addRuleCallback, [
+                    new RpcCallTransactionRawMatcher('eth_sendRawTransaction',
+                        [params])]);
+            } else {
+                super(addRuleCallback, [
+                    new RpcRevertCallTransactionRawMatcher('eth_sendRawTransaction',
+                        [params])]);
+            }
         } else {
             super(addRuleCallback, [new RpcCallMatcher('eth_sendRawTransaction')]);
         }

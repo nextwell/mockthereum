@@ -171,11 +171,18 @@ class TransactionRuleBuilder extends ContractRuleBuilder {
      * `mockNode.forSendTransactionTo()` instead.
      */
     constructor(params, // A specific params
-    addRuleCallback, addReceiptCallback) {
+    addRuleCallback, addReceiptCallback, type = 'include') {
         if (params) {
-            super(addRuleCallback, [
-                new jsonrpc_1.RpcCallTransactionRawMatcher('eth_sendRawTransaction', [params])
-            ]);
+            if (type === 'include') {
+                super(addRuleCallback, [
+                    new jsonrpc_1.RpcCallTransactionRawMatcher('eth_sendRawTransaction', [params])
+                ]);
+            }
+            else {
+                super(addRuleCallback, [
+                    new jsonrpc_1.RpcRevertCallTransactionRawMatcher('eth_sendRawTransaction', [params])
+                ]);
+            }
         }
         else {
             super(addRuleCallback, [new jsonrpc_1.RpcCallMatcher('eth_sendRawTransaction')]);

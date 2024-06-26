@@ -6,6 +6,10 @@ export declare class RpcCallTransactionRawMatcher extends Mockttp.matchers.JsonB
     constructor(method: string, params?: Array<unknown>);
     matches(request: any): Promise<boolean>;
 }
+export declare class RpcRevertCallTransactionRawMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
+    constructor(method: string, params?: Array<unknown>);
+    matches(request: any): Promise<boolean>;
+}
 export declare class RpcResponseHandler extends Mockttp.requestHandlerDefinitions.CallbackHandlerDefinition {
     constructor(result: unknown);
 }

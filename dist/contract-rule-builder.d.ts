@@ -71,7 +71,7 @@ export declare class TransactionRuleBuilder extends ContractRuleBuilder {
      * `mockNode.forSendTransactionTo()` instead.
      */
     constructor(params: undefined | object, // A specific params
-    addRuleCallback: (rule: Mockttp.RequestRuleData) => Promise<Mockttp.MockedEndpoint>, addReceiptCallback: (id: string, receipt: Partial<RawTransactionReceipt>) => Promise<void>);
+    addRuleCallback: (rule: Mockttp.RequestRuleData) => Promise<Mockttp.MockedEndpoint>, addReceiptCallback: (id: string, receipt: Partial<RawTransactionReceipt>) => Promise<void>, type?: string);
     private addReceiptCallback;
     /**
      * Return a successful transaction submission, with a random transaction id, and provide the

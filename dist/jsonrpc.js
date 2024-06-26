@@ -36,7 +36,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RpcErrorResponseHandler = exports.RpcResponseHandler = exports.RpcCallTransactionRawMatcher = exports.RpcCallMatcher = void 0;
+exports.RpcErrorResponseHandler = exports.RpcResponseHandler = exports.RpcRevertCallTransactionRawMatcher = exports.RpcCallTransactionRawMatcher = exports.RpcCallMatcher = void 0;
 const Mockttp = __importStar(require("mockttp"));
 const ethers = __importStar(require("ethers"));
 const _ = __importStar(require("lodash"));
@@ -74,6 +74,30 @@ class RpcCallTransactionRawMatcher extends Mockttp.matchers.JsonBodyFlexibleMatc
     }
 }
 exports.RpcCallTransactionRawMatcher = RpcCallTransactionRawMatcher;
+class RpcRevertCallTransactionRawMatcher extends Mockttp.matchers.JsonBodyFlexibleMatcher {
+    constructor(method, params = []) {
+        super({
+            jsonrpc: "2.0",
+            method,
+            params
+        });
+    }
+    matches(request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const receivedBody = yield (request.body.asJson().catch(() => undefined));
+            let tx;
+            try {
+                tx = ethers.utils.parseTransaction(receivedBody.params[0]);
+            }
+            catch (err) { }
+            if (receivedBody === undefined || !tx)
+                return false;
+            receivedBody.params = [tx];
+            return !_.isMatch(receivedBody, this.body);
+        });
+    }
+}
+exports.RpcRevertCallTransactionRawMatcher = RpcRevertCallTransactionRawMatcher;
 class RpcResponseHandler extends Mockttp.requestHandlerDefinitions.CallbackHandlerDefinition {
     constructor(result) {
         super((req) => __awaiter(this, void 0, void 0, function* () {
